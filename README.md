@@ -1,4 +1,4 @@
-# WPMediaPicker
+# WPMediaPicker test
 
 [![CI Status](https://travis-ci.org/wordpress-mobile/MediaPicker-iOS.svg?style=flat)](https://travis-ci.org/wordpress-mobile/MediaPicker-iOS)
 [![Version](https://img.shields.io/cocoapods/v/WPMediaPicker.svg?style=flat)](http://cocoadocs.org/docsets/WPMediaPicker)
