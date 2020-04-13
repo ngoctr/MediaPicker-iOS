@@ -2,6 +2,10 @@
 #import "WPMediaPickerResources.h"
 #import "WPDateTimeHelpers.h"
 
+@import SDWebImage;
+@import CoreServices;
+
+
 static const NSTimeInterval ThresholdForAnimation = 0.03;
 static const CGFloat TimeForFadeAnimation = 0.3;
 static const CGFloat LabelSmallFontSize = 9;
@@ -12,7 +16,7 @@ static const CGFloat LabelRegularFontSize = 13;
 @property (nonatomic, strong) UILabel *positionLabel;
 @property (nonatomic, strong) UIView *positionLabelShadowView;
 @property (nonatomic, strong) UIView *selectionFrame;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) SDAnimatedImageView *imageView;
 @property (nonatomic, strong) UILabel *captionLabel;
 @property (nonatomic, strong) UIView *gradientView;
 
@@ -76,7 +80,7 @@ static const CGFloat LabelRegularFontSize = 13;
     _placeholderBackgroundColor = self.backgroundColor;
     _loadingBackgroundColor = self.backgroundColor;
 
-    _imageView = [[UIImageView alloc] init];
+    _imageView = [[SDAnimatedImageView alloc] init];
     _imageView.isAccessibilityElement = YES;
     _imageView.contentMode = UIViewContentModeScaleAspectFill;
     _imageView.clipsToBounds = YES;
@@ -301,12 +305,16 @@ static const CGFloat LabelRegularFontSize = 13;
     CGFloat scale = [[UIScreen mainScreen] scale];
     CGSize requestSize = CGSizeApplyAffineTransform(self.frame.size, CGAffineTransformMakeScale(scale, scale));
     __weak __typeof__(self) weakSelf = self;
-    requestKey = [_asset imageWithSize:requestSize completionHandler:^(UIImage *result, NSError *error) {
+    requestKey = [_asset imageWithSize:requestSize completionHandler:^(NSData *result, NSError *error) {
+        // First, try to get an animated image if possible, if not, then we go with a static image
+        SDAnimatedImage* animatedImage = [[SDAnimatedImage alloc] initWithData:result];
+        UIImage* image = animatedImage ?: [UIImage imageWithData:result];
+        
         if ([NSThread isMainThread]){
-            [weakSelf updateCellWithImage:result error:error timestamp:timestamp requestKey:requestKey];
+            [weakSelf updateCellWithImage:image error:error timestamp:timestamp requestKey:requestKey];
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf updateCellWithImage:result error:error timestamp:timestamp requestKey:requestKey];
+                [weakSelf updateCellWithImage:image error:error timestamp:timestamp requestKey:requestKey];
             });
         }
     }];
@@ -320,7 +328,7 @@ static const CGFloat LabelRegularFontSize = 13;
 
 - (void)setImage:(UIImage *)image animated:(BOOL)animated
 {
-    if (!image){
+    if (!image) {
         self.imageView.alpha = 0;
         self.imageView.image = nil;
     } else {

@@ -166,7 +166,7 @@
     self.imageView.hidden = NO;
     [self.activityIndicatorView startAnimating];
     __weak __typeof__(self) weakSelf = self;
-    [self.asset imageWithSize:CGSizeZero completionHandler:^(UIImage *result, NSError *error) {
+    [self.asset imageWithSize:CGSizeZero completionHandler:^(NSData *result, NSError *error) {
         __typeof__(self) strongSelf = weakSelf;
         if (!strongSelf) {
             return;
@@ -177,7 +177,7 @@
                 [strongSelf showError:error];
                 return;
             }
-            strongSelf.imageView.image = result;
+            strongSelf.imageView.image = [UIImage imageWithData:result];
         });
     }];
 }

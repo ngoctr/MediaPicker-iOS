@@ -36,7 +36,7 @@ typedef void (^WPMediaChangesBlock)(BOOL incrementalChanges, NSIndexSet * _Nonnu
 typedef void (^WPMediaSuccessBlock)(void);
 typedef void (^WPMediaFailureBlock)(NSError * _Nullable error);
 typedef void (^WPMediaAddedBlock)(_Nullable id<WPMediaAsset> media, NSError * _Nullable error);
-typedef void (^WPMediaImageBlock)(UIImage * _Nullable result, NSError * _Nullable error);
+typedef void (^WPMediaImageBlock)(NSData * _Nullable result, NSError * _Nullable error);
 typedef void (^WPMediaCountBlock)(NSInteger result, NSError * _Nullable error);
 typedef void (^WPMediaAssetBlock)(AVAsset * _Nullable asset, NSError * _Nullable error);
 typedef int32_t WPMediaRequestID;

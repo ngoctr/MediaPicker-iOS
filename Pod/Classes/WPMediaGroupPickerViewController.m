@@ -120,14 +120,14 @@ static CGFloat const WPMediaGroupCellHeight = 86.0f;
     CGFloat scale = [[UIScreen mainScreen] scale];
     CGSize requestSize = CGSizeApplyAffineTransform(CGSizeMake(WPMediaGroupCellHeight, WPMediaGroupCellHeight), CGAffineTransformMakeScale(scale, scale));
     [group imageWithSize:requestSize
-       completionHandler:^(UIImage *result, NSError *error)
+       completionHandler:^(NSData *result, NSError *error)
      {
          if (error) {
              return;
          }
          if ([cell.groupIdentifier isEqualToString:groupID]){
              dispatch_async(dispatch_get_main_queue(), ^{
-                 cell.imagePosterView.image = result;
+                 cell.imagePosterView.image = [UIImage imageWithData:result];
              });
          }
      }];

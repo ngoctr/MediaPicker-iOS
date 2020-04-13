@@ -511,7 +511,8 @@
              return;
          }
          if (completionHandler){
-             completionHandler(result, nil);
+             NSData* data = UIImagePNGRepresentation(result);
+             completionHandler(data, nil);
          }
     }];
 }

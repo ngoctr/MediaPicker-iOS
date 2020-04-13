@@ -25,5 +25,7 @@ Pod::Spec.new do |s|
 
   s.public_header_files = 'Pod/Classes/**/*.h'
   s.private_header_files = 'Pod/Classes/WPDateTimeHelpers.h', 'Pod/Classes/WPImageExporter.h', 'Pod/Classes/UIViewController+MediaAdditions.h'
-  s.frameworks = 'UIKit', 'Photos', 'AVFoundation', 'ImageIO'
+  s.frameworks = 'UIKit', 'Photos', 'AVFoundation', 'ImageIO', 'CoreGraphics'
+  
+  s.dependency 'SDWebImage', '~> 5.0'
 end
