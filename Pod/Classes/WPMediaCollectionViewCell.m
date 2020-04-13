@@ -55,6 +55,8 @@ static const CGFloat LabelRegularFontSize = 13;
         [self.asset cancelImageRequest:self.requestKey];
     }
     self.requestKey = 0;
+    // Stop animating if needed
+    [self.imageView stopAnimating];
     [self setImage:nil animated:NO];
     [self setCaption:@""];
     [self setPosition:NSNotFound];
